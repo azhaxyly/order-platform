@@ -11,6 +11,20 @@ services:
     volumes:
       - postgres_order_data:/var/lib/postgresql/data
 
+  postgres-payment:
+    image: postgres:16-alpine
+    container_name: postgres-payment
+    environment:
+      POSTGRES_DB: payment_service
+      POSTGRES_USER: payment_user      
+      POSTGRES_PASSWORD: payment_pass  
+    ports:
+      - "5436:5432"                    
+    volumes:
+      - postgres_payment_data:/var/lib/postgresql/data
+    networks:
+      - order-network
+
   # --- MESSAGE BROKER ---
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
@@ -38,3 +52,8 @@ services:
 
 volumes:
   postgres_order_data:
+  postgres_payment_data:
+
+networks:
+  order-network:
+    driver: bridge

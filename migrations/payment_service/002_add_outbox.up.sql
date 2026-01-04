@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS payment_outbox (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    topic VARCHAR(255) NOT NULL,
+    payload JSONB NOT NULL,
+    status VARCHAR(50) DEFAULT 'PENDING', -- PENDING, PROCESSED
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);

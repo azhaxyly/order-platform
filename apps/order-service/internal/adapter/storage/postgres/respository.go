@@ -124,3 +124,17 @@ func (r *OrderRepository) MarkEventAsPublished(ctx context.Context, eventID uuid
 	_, err := r.db.ExecContext(ctx, query, time.Now().UTC(), eventID)
 	return err
 }
+
+func (r *OrderRepository) UpdateStatus(ctx context.Context, id uuid.UUID, status domain.OrderStatus) error {
+	query := `
+		UPDATE orders 
+		SET status = $1, updated_at = $2
+		WHERE id = $3
+	`
+	// Используем time.Now().UTC()
+	_, err := r.db.ExecContext(ctx, query, status, time.Now().UTC(), id)
+	if err != nil {
+		return fmt.Errorf("failed to update order status: %w", err)
+	}
+	return nil
+}
